@@ -6,8 +6,12 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client (replace with your environment variables)
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+// Initialize Supabase client
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+// Only initialize if URL is present (prevents build-time crashes during static prerendering)
+const supabase = supabaseUrl ? createClient(supabaseUrl, supabaseAnonKey) : null;
 
 export default function FocusPage() {
   const { data: session, status } = useSession();
